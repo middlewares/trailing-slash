@@ -44,7 +44,7 @@ class TrailingSlash implements MiddlewareInterface
     }
 
     /**
-     * Process a client request and return a response.
+     * Process a request and return a response.
      *
      * @param RequestInterface  $request
      * @param DelegateInterface $delegate
