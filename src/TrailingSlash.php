@@ -17,7 +17,7 @@ class TrailingSlash implements MiddlewareInterface
     /**
      * @var bool Returns a redirect response or not
      */
-    private $redirect;
+    private $redirect = false;
 
     /**
      * Configure whether add or remove the slash.
