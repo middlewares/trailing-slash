@@ -2,12 +2,12 @@
 
 namespace Middlewares;
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Interop\Http\Middleware\MiddlewareInterface;
+use Interop\Http\Middleware\ServerMiddlewareInterface;
 use Interop\Http\Middleware\DelegateInterface;
 
-class TrailingSlash implements MiddlewareInterface
+class TrailingSlash implements ServerMiddlewareInterface
 {
     /**
      * @var bool Add or remove the slash
@@ -46,12 +46,12 @@ class TrailingSlash implements MiddlewareInterface
     /**
      * Process a request and return a response.
      *
-     * @param RequestInterface  $request
-     * @param DelegateInterface $delegate
+     * @param ServerRequestInterface $request
+     * @param DelegateInterface      $delegate
      *
      * @return ResponseInterface
      */
-    public function process(RequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
         $uri = $request->getUri();
         $path = $this->normalize($uri->getPath());

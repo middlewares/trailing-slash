@@ -3,9 +3,10 @@
 namespace Middlewares\Tests;
 
 use Middlewares\TrailingSlash;
-use Zend\Diactoros\Request;
+use Middlewares\Utils\Dispatcher;
+use Middlewares\Utils\CallableMiddleware;
+use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Response;
-use mindplay\middleman\Dispatcher;
 
 class TrailingSlashTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,15 +28,15 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
         $dispatcher = new Dispatcher([
             new TrailingSlash(),
 
-            function ($request, $next) {
+            new CallableMiddleware(function ($request, $next) {
                 $response = new Response();
                 $response->getBody()->write((string) $request->getUri());
 
                 return $response;
-            },
+            }),
         ]);
 
-        $response = $dispatcher->dispatch(new Request($url));
+        $response = $dispatcher->dispatch(new ServerRequest([], [], $url));
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
@@ -61,15 +62,15 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
         $dispatcher = new Dispatcher([
             new TrailingSlash(true),
 
-            function ($request, $next) {
+            new CallableMiddleware(function ($request, $next) {
                 $response = new Response();
                 $response->getBody()->write((string) $request->getUri());
 
                 return $response;
-            },
+            }),
         ]);
 
-        $response = $dispatcher->dispatch(new Request($url));
+        $response = $dispatcher->dispatch(new ServerRequest([], [], $url));
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
@@ -81,7 +82,7 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
             (new TrailingSlash())->redirect(),
         ]);
 
-        $response = $dispatcher->dispatch(new Request('/foo/bar/'));
+        $response = $dispatcher->dispatch(new ServerRequest([], [], '/foo/bar/'));
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals(301, (string) $response->getStatusCode());
