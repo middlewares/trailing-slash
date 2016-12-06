@@ -4,9 +4,7 @@ namespace Middlewares\Tests;
 
 use Middlewares\TrailingSlash;
 use Middlewares\Utils\Dispatcher;
-use Middlewares\Utils\CallableMiddleware;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Response;
+use Middlewares\Utils\Factory;
 
 class TrailingSlashTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,20 +21,17 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider removeProvider
      */
-    public function testRemove($url, $result)
+    public function testRemove($uri, $result)
     {
-        $dispatcher = new Dispatcher([
+        $request = Factory::createServerRequest([], 'GET', $uri);
+
+        $response = (new Dispatcher([
             new TrailingSlash(),
 
-            new CallableMiddleware(function ($request, $next) {
-                $response = new Response();
-                $response->getBody()->write((string) $request->getUri());
-
-                return $response;
-            }),
-        ]);
-
-        $response = $dispatcher->dispatch(new ServerRequest([], [], $url));
+            function ($request, $next) {
+                echo $request->getUri();
+            },
+        ]))->dispatch($request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
@@ -57,20 +52,17 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider addProvider
      */
-    public function testAdd($url, $result)
+    public function testAdd($uri, $result)
     {
-        $dispatcher = new Dispatcher([
+        $request = Factory::createServerRequest([], 'GET', $uri);
+
+        $response = (new Dispatcher([
             new TrailingSlash(true),
 
-            new CallableMiddleware(function ($request, $next) {
-                $response = new Response();
-                $response->getBody()->write((string) $request->getUri());
-
-                return $response;
-            }),
-        ]);
-
-        $response = $dispatcher->dispatch(new ServerRequest([], [], $url));
+            function ($request, $next) {
+                echo $request->getUri();
+            },
+        ]))->dispatch($request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
@@ -78,11 +70,11 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
 
     public function testRedirect()
     {
-        $dispatcher = new Dispatcher([
-            (new TrailingSlash())->redirect(),
-        ]);
+        $request = Factory::createServerRequest([], 'GET', '/foo/bar/');
 
-        $response = $dispatcher->dispatch(new ServerRequest([], [], '/foo/bar/'));
+        $response = (new Dispatcher([
+            (new TrailingSlash())->redirect(),
+        ]))->dispatch($request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals(301, (string) $response->getStatusCode());
