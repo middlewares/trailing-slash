@@ -25,13 +25,13 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
     {
         $request = Factory::createServerRequest([], 'GET', $uri);
 
-        $response = (new Dispatcher([
+        $response = Dispatcher::run([
             new TrailingSlash(),
 
             function ($request, $next) {
                 echo $request->getUri();
             },
-        ]))->dispatch($request);
+        ], $request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
@@ -56,13 +56,13 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
     {
         $request = Factory::createServerRequest([], 'GET', $uri);
 
-        $response = (new Dispatcher([
+        $response = Dispatcher::run([
             new TrailingSlash(true),
 
             function ($request, $next) {
                 echo $request->getUri();
             },
-        ]))->dispatch($request);
+        ], $request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
@@ -72,9 +72,9 @@ class TrailingSlashTest extends \PHPUnit_Framework_TestCase
     {
         $request = Factory::createServerRequest([], 'GET', '/foo/bar/');
 
-        $response = (new Dispatcher([
+        $response = Dispatcher::run([
             (new TrailingSlash())->redirect(),
-        ]))->dispatch($request);
+        ], $request);
 
         $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals(301, (string) $response->getStatusCode());
