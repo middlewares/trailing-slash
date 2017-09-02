@@ -2,11 +2,12 @@
 
 namespace Middlewares\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Middlewares\TrailingSlash;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
 
-class TrailingSlashTest extends \PHPUnit_Framework_TestCase
+class TrailingSlashTest extends TestCase
 {
     public function removeProvider()
     {
