@@ -2,10 +2,10 @@
 
 namespace Middlewares\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Middlewares\TrailingSlash;
 use Middlewares\Utils\Dispatcher;
 use Middlewares\Utils\Factory;
+use PHPUnit\Framework\TestCase;
 
 class TrailingSlashTest extends TestCase
 {
@@ -21,6 +21,8 @@ class TrailingSlashTest extends TestCase
 
     /**
      * @dataProvider removeProvider
+     * @param mixed $uri
+     * @param mixed $result
      */
     public function testRemove($uri, $result)
     {
@@ -52,6 +54,8 @@ class TrailingSlashTest extends TestCase
 
     /**
      * @dataProvider addProvider
+     * @param mixed $uri
+     * @param mixed $result
      */
     public function testAdd($uri, $result)
     {
