@@ -2,8 +2,8 @@
 
 namespace Middlewares;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -46,12 +46,12 @@ class TrailingSlash implements MiddlewareInterface
     /**
      * Process a request and return a response.
      *
-     * @param ServerRequestInterface $request
-     * @param DelegateInterface      $delegate
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
     {
         $uri = $request->getUri();
         $path = $this->normalize($uri->getPath());
@@ -61,7 +61,7 @@ class TrailingSlash implements MiddlewareInterface
                 ->withHeader('Location', (string) $uri->withPath($path));
         }
 
-        return $delegate->process($request->withUri($uri->withPath($path)));
+        return $handler->handle($request->withUri($uri->withPath($path)));
     }
 
     /**
