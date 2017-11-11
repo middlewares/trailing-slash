@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Middlewares;
 
@@ -21,37 +22,26 @@ class TrailingSlash implements MiddlewareInterface
 
     /**
      * Configure whether add or remove the slash.
-     *
-     * @param bool $trailingSlash
      */
-    public function __construct($trailingSlash = false)
+    public function __construct(bool $trailingSlash = false)
     {
-        $this->trailingSlash = (bool) $trailingSlash;
+        $this->trailingSlash = $trailingSlash;
     }
 
     /**
      * Whether returns a 301 response to the new path.
-     *
-     * @param bool $redirect
-     *
-     * @return self
      */
-    public function redirect($redirect = true)
+    public function redirect(bool $redirect = true): self
     {
-        $this->redirect = (bool) $redirect;
+        $this->redirect = $redirect;
 
         return $this;
     }
 
     /**
      * Process a request and return a response.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $uri = $request->getUri();
         $path = $this->normalize($uri->getPath());
@@ -66,12 +56,8 @@ class TrailingSlash implements MiddlewareInterface
 
     /**
      * Normalize the trailing slash.
-     *
-     * @param string $path
-     *
-     * @return string
      */
-    private function normalize($path)
+    private function normalize(string $path): string
     {
         if ($path === '') {
             return '/';
