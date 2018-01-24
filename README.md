@@ -36,7 +36,7 @@ $response = $dispatcher->dispatch(new ServerRequest());
 
 ## Options
 
-#### `__construct(false)`
+#### `__construct(booll $trailingSlash = false)`
 
 Set `true` to add the slash instead remove so, for example, `post/23` is converted to `/post/23/`. Note that if the path contains an extension, the slash is **NOT** added. For example, `images/image.png` remains the same, instead be converted to `images/image.png/`.
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Middlewares\Tests;
 
@@ -9,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class TrailingSlashTest extends TestCase
 {
-    public function removeProvider()
+    public function removeProvider(): array
     {
         return [
             ['/foo/bar', '/foo/bar'],
@@ -21,10 +22,8 @@ class TrailingSlashTest extends TestCase
 
     /**
      * @dataProvider removeProvider
-     * @param mixed $uri
-     * @param mixed $result
      */
-    public function testRemove($uri, $result)
+    public function testRemove(string $uri, string $result)
     {
         $request = Factory::createServerRequest([], 'GET', $uri);
 
@@ -36,11 +35,10 @@ class TrailingSlashTest extends TestCase
             },
         ], $request);
 
-        $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
     }
 
-    public function addProvider()
+    public function addProvider(): array
     {
         return [
             ['/foo/bar', '/foo/bar/'],
@@ -54,10 +52,8 @@ class TrailingSlashTest extends TestCase
 
     /**
      * @dataProvider addProvider
-     * @param mixed $uri
-     * @param mixed $result
      */
-    public function testAdd($uri, $result)
+    public function testAdd(string $uri, string $result)
     {
         $request = Factory::createServerRequest([], 'GET', $uri);
 
@@ -69,7 +65,6 @@ class TrailingSlashTest extends TestCase
             },
         ], $request);
 
-        $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals($result, (string) $response->getBody());
     }
 
@@ -81,7 +76,6 @@ class TrailingSlashTest extends TestCase
             (new TrailingSlash())->redirect(),
         ], $request);
 
-        $this->assertInstanceOf('Psr\\Http\\Message\\ResponseInterface', $response);
         $this->assertEquals(301, (string) $response->getStatusCode());
         $this->assertEquals('/foo/bar', $response->getHeaderLine('location'));
     }
