@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Middlewares;
 
+use Middlewares\Utils\Traits\HasResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -10,6 +11,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class TrailingSlash implements MiddlewareInterface
 {
+    use HasResponseFactory;
+
     /**
      * @var bool Add or remove the slash
      */
@@ -47,7 +50,7 @@ class TrailingSlash implements MiddlewareInterface
         $path = $this->normalize($uri->getPath());
 
         if ($this->redirect && ($uri->getPath() !== $path)) {
-            return Utils\Factory::createResponse(301)
+            return $this->createResponse(301)
                 ->withHeader('Location', (string) $uri->withPath($path));
         }
 

@@ -25,7 +25,7 @@ class TrailingSlashTest extends TestCase
      */
     public function testRemove(string $uri, string $result)
     {
-        $request = Factory::createServerRequest([], 'GET', $uri);
+        $request = Factory::createServerRequest('GET', $uri);
 
         $response = Dispatcher::run([
             new TrailingSlash(),
@@ -55,7 +55,7 @@ class TrailingSlashTest extends TestCase
      */
     public function testAdd(string $uri, string $result)
     {
-        $request = Factory::createServerRequest([], 'GET', $uri);
+        $request = Factory::createServerRequest('GET', $uri);
 
         $response = Dispatcher::run([
             new TrailingSlash(true),
@@ -70,7 +70,7 @@ class TrailingSlashTest extends TestCase
 
     public function testRedirect()
     {
-        $request = Factory::createServerRequest([], 'GET', '/foo/bar/');
+        $request = Factory::createServerRequest('GET', '/foo/bar/');
 
         $response = Dispatcher::run([
             (new TrailingSlash())->redirect(),
