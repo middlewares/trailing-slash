@@ -44,6 +44,9 @@ Set `true` to add the slash instead remove so, for example, `post/23` is convert
 
 Set this option to return a `301` response redirecting to the new path
 
+#### `responseFactory(Psr\Http\Message\ResponseFactoryInterface $responseFactory)`
+
+A PSR-17 factory to create `301` responses.
 ---
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about recent changes and [CONTRIBUTING](CONTRIBUTING.md) for contributing details.
