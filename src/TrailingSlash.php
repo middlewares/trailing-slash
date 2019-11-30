@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Middlewares;
 
-use Middlewares\Utils\Traits\HasResponseFactory;
 use Middlewares\Utils\Factory;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -13,33 +12,30 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class TrailingSlash implements MiddlewareInterface
 {
-    use HasResponseFactory;
-
     /**
      * @var bool Add or remove the slash
      */
     private $trailingSlash;
 
     /**
-     * @var bool Returns a redirect response or not
+     * @var ResponseFactoryInterface
      */
-    private $redirect = false;
+    private $responseFactory;
 
     /**
      * Configure whether add or remove the slash.
      */
-    public function __construct(bool $trailingSlash = false, ResponseFactoryInterface $responseFactory = null)
+    public function __construct(bool $trailingSlash = false)
     {
         $this->trailingSlash = $trailingSlash;
-        $this->responseFactory = $responseFactory ?: Factory::getResponseFactory();
     }
 
     /**
      * Whether returns a 301 response to the new path.
      */
-    public function redirect(bool $redirect = true): self
+    public function redirect(ResponseFactoryInterface $responseFactory = null): self
     {
-        $this->redirect = $redirect;
+        $this->responseFactory = $responseFactory ?: Factory::getResponseFactory();
 
         return $this;
     }
@@ -52,8 +48,8 @@ class TrailingSlash implements MiddlewareInterface
         $uri = $request->getUri();
         $path = $this->normalize($uri->getPath());
 
-        if ($this->redirect && ($uri->getPath() !== $path)) {
-            return $this->createResponse(301)
+        if ($this->responseFactory && ($uri->getPath() !== $path)) {
+            return $this->responseFactory->createResponse(301)
                 ->withHeader('Location', (string) $uri->withPath($path));
         }
 
