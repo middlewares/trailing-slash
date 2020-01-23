@@ -39,10 +39,10 @@ By default, this middleware removes the trailing slash of the uri path. Set `tru
 
 ```php
 //Removes the slash, so /post/23/ is converted to /post/23
-$slash = new Middlewares\TrailinSlash();
+$slash = new Middlewares\TrailingSlash();
 
 //Force the slash, so /post/23 is converted to /post/23/
-$slash = new Middlewares\TrailinSlash(true);
+$slash = new Middlewares\TrailingSlash(true);
 ```
 
 Of course, if the path contains an extension, the slash is **NOT** added. For example, `images/image.png` remains the same, instead be converted to `images/image.png/`.
@@ -55,13 +55,13 @@ If the path must be converted, this option returns a `301` response redirecting 
 $responseFactory = new MyOwnResponseFactory();
 
 //Simply removes the slash
-$slash = new Middlewares\TrailinSlash();
+$slash = new Middlewares\TrailingSlash();
 
 //Returns a redirect response to the new path
-$slash = (new Middlewares\TrailinSlash())->redirect();
+$slash = (new Middlewares\TrailingSlash())->redirect();
 
 //Returns a redirect response to the new path using a specific response factory
-$slash = (new Middlewares\TrailinSlash())->redirect($responseFactory);
+$slash = (new Middlewares\TrailingSlash())->redirect($responseFactory);
 ```
 
 ---
