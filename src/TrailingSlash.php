@@ -18,9 +18,9 @@ class TrailingSlash implements MiddlewareInterface
     private $trailingSlash;
 
     /**
-     * @var ResponseFactoryInterface
+     * @var ResponseFactoryInterface|null
      */
-    private $responseFactory;
+    private $responseFactory = null;
 
     /**
      * Configure whether add or remove the slash.

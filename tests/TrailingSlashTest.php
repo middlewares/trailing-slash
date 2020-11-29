@@ -23,7 +23,7 @@ class TrailingSlashTest extends TestCase
     /**
      * @dataProvider removeProvider
      */
-    public function testRemove(string $uri, string $result)
+    public function testRemove(string $uri, string $result): void
     {
         $request = Factory::createServerRequest('GET', $uri);
 
@@ -35,7 +35,7 @@ class TrailingSlashTest extends TestCase
             },
         ], $request);
 
-        $this->assertEquals($result, (string) $response->getBody());
+        self::assertEquals($result, (string) $response->getBody());
     }
 
     public function addProvider(): array
@@ -53,7 +53,7 @@ class TrailingSlashTest extends TestCase
     /**
      * @dataProvider addProvider
      */
-    public function testAdd(string $uri, string $result)
+    public function testAdd(string $uri, string $result): void
     {
         $request = Factory::createServerRequest('GET', $uri);
 
@@ -65,10 +65,10 @@ class TrailingSlashTest extends TestCase
             },
         ], $request);
 
-        $this->assertEquals($result, (string) $response->getBody());
+        self::assertEquals($result, (string) $response->getBody());
     }
 
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $request = Factory::createServerRequest('GET', '/foo/bar/');
 
@@ -76,7 +76,7 @@ class TrailingSlashTest extends TestCase
             (new TrailingSlash())->redirect(),
         ], $request);
 
-        $this->assertEquals(301, (string) $response->getStatusCode());
-        $this->assertEquals('/foo/bar', $response->getHeaderLine('location'));
+        self::assertEquals(301, (string) $response->getStatusCode());
+        self::assertEquals('/foo/bar', $response->getHeaderLine('location'));
     }
 }
