@@ -33,7 +33,7 @@ class TrailingSlash implements MiddlewareInterface
     /**
      * Whether returns a 301 response to the new path.
      */
-    public function redirect(ResponseFactoryInterface $responseFactory = null): self
+    public function redirect(?ResponseFactoryInterface $responseFactory = null): self
     {
         $this->responseFactory = $responseFactory ?: Factory::getResponseFactory();
 
