@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.3] - 2024-11-21
+### Fixed
+- Support for PHP 8.4 [#6]
+
 ## [2.0.2] - 2024-11-13
 ### Fixed
 - Allow `middlewares/utils:^4` [#5]
@@ -68,7 +72,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 First version
 
 [#5]: https://github.com/middlewares/trailing-slash/issues/5
+[#6]: https://github.com/middlewares/trailing-slash/issues/6
 
+[2.0.3]: https://github.com/middlewares/trailing-slash/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/middlewares/trailing-slash/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/middlewares/trailing-slash/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/middlewares/trailing-slash/compare/v1.1.0...v2.0.0
