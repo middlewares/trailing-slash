@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class TrailingSlashTest extends TestCase
 {
+    /**
+     * @return array<string[]>
+     */
     public function removeProvider(): array
     {
         return [
@@ -23,7 +26,7 @@ class TrailingSlashTest extends TestCase
     /**
      * @dataProvider removeProvider
      */
-    public function testRemove(string $uri, string $result)
+    public function testRemove(string $uri, string $result): void
     {
         $request = Factory::createServerRequest('GET', $uri);
 
@@ -38,6 +41,9 @@ class TrailingSlashTest extends TestCase
         $this->assertEquals($result, (string) $response->getBody());
     }
 
+    /**
+     * @return array<string[]>
+     */
     public function addProvider(): array
     {
         return [
@@ -53,7 +59,7 @@ class TrailingSlashTest extends TestCase
     /**
      * @dataProvider addProvider
      */
-    public function testAdd(string $uri, string $result)
+    public function testAdd(string $uri, string $result): void
     {
         $request = Factory::createServerRequest('GET', $uri);
 
@@ -68,7 +74,7 @@ class TrailingSlashTest extends TestCase
         $this->assertEquals($result, (string) $response->getBody());
     }
 
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $request = Factory::createServerRequest('GET', '/foo/bar/');
 
